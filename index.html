@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hammerle Metal Works Spacing Calculator</title>
+<style>
+body{font-family:Arial;padding:15px;font-size:18px;}
+.title{text-align:center;font-size:24px;font-weight:bold;}
+input,button{font-size:18px;padding:12px;width:100%;margin-top:8px;}
+button{background:black;color:white;}
+.result{margin-top:15px;padding:10px;background:#f0f0f0;}
+</style>
+</head>
+<body>
+
+<div class="title">Hammerle Metal Works Spacing Calculator</div>
+
+<label>Opening Width</label>
+<input id="opening" value="116">
+
+<label>Member Width</label>
+<input id="member" value="1.5">
+
+<label>Max OC</label>
+<input id="maxoc" value="18">
+
+<button onclick="calc()">Calculate</button>
+
+<div class="result" id="output"></div>
+
+<script>
+function gcd(a,b){return b?gcd(b,a%b):a;}
+function frac(x){
+let w=Math.floor(x);
+let n=Math.round((x-w)*16);
+let d=16;
+if(n==0)return w+'"';
+if(n==16)return (w+1)+'"';
+let g=gcd(n,d);
+n/=g;
+d/=g;
+return w+"-"+n+"/"+d+'"';
+}
+function calc(){
+let opening=parseFloat(document.getElementById("opening").value);
+let member=parseFloat(document.getElementById("member").value);
+let max=parseFloat(document.getElementById("maxoc").value);
+let N=1,gap,oc;
+while(true){
+gap=(opening-N*member)/(N+1);
+oc=gap+member;
+if(oc<=max)break;
+N++;
+}
+document.getElementById("output").innerHTML=
+"Members: "+N+"<br>"+
+"Gap: "+frac(gap)+"<br>"+
+"OC: "+frac(oc);
+}
+</script>
+
+</body>
+</html>
